@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import * as htmlToImage from 'html-to-image';
+import SImage from '@/components/MyImage';
 import moment from 'moment';
-import SImage  from '@/components/MyImage';
+import { useMemo } from 'react';
 
 export async function getServerSideProps(context) {
   // Fetch data from external API
@@ -48,30 +47,67 @@ const Invoice = ({ data }) => {
 
   if (orderDetail?.error)
     return (
-      <div className="text-center mt-5">
+      <div style={{
+        textAlign: "center",
+        marginTop: "50px"
+      }}>
         <div>{orderDetail?.error}</div>
       </div>
     );
 
   return (
-    <>
-    <div className="flex flex-col justify-center items-center py-10" id="invoice-wp">
+    <div style={{
+        fontFamily: "Lato, sans-serif",
+        fontSize: "16px",
+        lineHeight: "25px" 
+    }}>
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "25px 0px"
+    }} id="invoice-wp">
       <div
-        className="p-5 border"
         id="invoice"
-        style={{ width: '452px', border: '1px solid #dfdfdf' }}
+        style={{ padding: "15px", width: '452px', border: '1px solid #dfdfdf' }}
       >
-        <div className="head flex flex-col justify-center ">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <div className="flex items-center justify-center gap-3">
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center"
+        }}>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px"
+          }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+            }}>
               <SImage src="/one-life.png" width="28" height="28" />
-              <div className="flex flex-col">
-                <span className="text-xl font-bold">OneLife</span>
+              <div style={{
+                display: "flex",
+                flexDirection: "column"
+              }}>
+                <span style={{
+                  fontSize: "20px",
+                  fontWeight: "bold"
+                }}>OneLife</span>
                 <span>Live it to the fullest</span>
               </div>
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-center" style={{ width: '85%' }}>
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }} >
+              <span style={{ width: '85%', marginBottom: '10px', textAlign: "center" }}>
                 CH: {fullAddress}
               </span>
               <span>
@@ -79,12 +115,14 @@ const Invoice = ({ data }) => {
               </span>
             </div>
             <div
-              className="border border-dashed my-3"
-              style={{ borderColor: '#000000', width: '100%' }}
+              style={{ border: "1px dashed #000000", margin: "15px 0px", width: '100%' }}
             ></div>
-            <h1 className="font-bold mb-3" style={{fontSize: "25px"}}>HOÁ ĐƠN BÁN HÀNG</h1>
+            <h1 style={{fontSize: "25px", fontWeight: "bold", marginBottom: "12px"}}>HOÁ ĐƠN BÁN HÀNG</h1>
           </div>
-          <div className="flex flex-col">
+          <div style={{
+            display: "flex",
+            flexDirection: "column"
+          }}  >
             <span>
               Thời gian: {moment(orderDetail?.header?.orderTime).format('HH:mm DD/MM/YYYY')}
             </span>
@@ -94,19 +132,22 @@ const Invoice = ({ data }) => {
               SDT: ******
               {customer?.phone?.toString().slice(customer?.phone?.length - 4, customer?.phone)}
             </span>
-            <div className="my-2"></div>
+            <div style={{margin: "15px 0px"}}></div>
             <div
-              className="border border-dashed w-100 my-3"
-              style={{ borderColor: '#000000' }}
+              style={{ border: "1px dashed #000000", margin: "15px 0px", width: '100%' }}
             ></div>
-            <div className="flex py-2 mt-2">
-              <div className="font-bold" style={{ width: '50%' }}>
+            <div style={{
+              display: "flex",
+              margin: "10px",
+              marginTop: "10px",
+            }} >
+              <div style={{ width: '50%', fontWeight: "bold"}}>
                 Đơn giá
               </div>
-              <div className="font-bold" style={{ width: '25%' }}>
+              <div style={{ width: '25%', fontWeight: "bold"}}>
                 SL
               </div>
-              <div className="font-bold text-right" style={{ width: '25%' }}>
+              <div style={{ width: '25%', fontWeight: "bold", textAlign: "right"}}>
                 Thành tiền
               </div>
             </div>
@@ -116,11 +157,17 @@ const Invoice = ({ data }) => {
                 (Number(originPrice) - Number(sellPrice)) / Number(originPrice) / 100
               );
               return (
-                <div key={index} className="flex flex-col py-2">
-                  <div className="uppercase" style={{ width: '100%' }}>
+                <div key={index} style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  margin: '10px 0',
+                }}>
+                  <div  style={{ width: '100%' }}>
                     {product?.name} {product.unit && `(${product?.unit})`}
                   </div>
-                  <div className="flex">
+                  <div style={{
+                    display: "flex"
+                  }}>
                     <div style={{ width: '50%' }}>
                       {sellPrice === originPrice && (
                         <span>{new Intl.NumberFormat().format(originPrice) || 0}</span>
@@ -129,7 +176,9 @@ const Invoice = ({ data }) => {
                         <>
                           <span>{new Intl.NumberFormat().format(sellPrice) || 0}</span>
                           {'   '}
-                          <span className={`${sellPrice == originPrice && 'line-through'}`}>
+                          <span style={{
+                            textDecoration: `${sellPrice == originPrice && 'line-through'}`
+                          }}>
                             {new Intl.NumberFormat().format(originPrice) || 0}
                           </span>
                         </>
@@ -142,7 +191,7 @@ const Invoice = ({ data }) => {
                       )}
                     </div>
                     <div style={{ width: '25%' }}>{product?.quantity}</div>
-                    <div className="text-right" style={{ width: '25%' }}>
+                    <div style={{ width: '25%', textAlign: "right" }}>
                       <span>32,000</span>
                     </div>
                   </div>
@@ -150,71 +199,128 @@ const Invoice = ({ data }) => {
               );
             })}
           </div>
-          <div className="border border-dashed w-100 my-3" style={{ borderColor: '#000000' }}></div>
-          <div className="flex flex-col items-between">
-            <div className="flex justify-between">
+          <div
+              style={{ border: "1px dashed #000000", margin: "15px 0px", width: '100%' }}
+            ></div>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between"
+          }}>
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
               <span>Tổng số lượng:</span>
               <span>{totalProduct}</span>
             </div>
-            <div className="flex justify-between">
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
               <span>Tổng tiền hàng:</span>
               <span>{new Intl.NumberFormat().format(totalPrice) || 0}</span>
             </div>
-            <div className="flex justify-between">
+            <div style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
               <span>Giảm giá hoá đơn:</span>
               <span>--</span>
             </div>
-            <div className="flex justify-between">
+            <div style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
               <span>Phí ship:</span>
               <span>{new Intl.NumberFormat().format(shippingPrice) || 0}</span>
             </div>
           </div>
-          <div className="border border-dashed w-100 my-3" style={{ borderColor: '#000000' }}></div>
-          <div className="flex flex-col items-between">
-            <div className="flex justify-between">
+          <div
+              style={{ border: "1px dashed #000000", margin: "15px 0px", width: '100%' }}
+            ></div>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+          }}>
+            <div style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
               <span>Tộng cộng:</span>
               <span>{new Intl.NumberFormat().format(amountCaculator) || 0}</span>
             </div>
-            <div className="flex justify-between">
+            <div style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
               <span>Tiền khách đưa:</span>
               <span>--</span>
             </div>
-            <div className="flex justify-between">
-              <div className="text-right">
+            <div style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
+              <div style={{textAlign: "right"}}>
                 <span>Thanh toán bằng điểm (VNĐ):</span>
               </div>
-              <div className="text-right">
+              <div style={{textAlign: "right"}}>
                 <span>--</span>
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="text-right">
+            <div style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
+              <div style={{textAlign: "right"}}>
                 <span>Tổng điểm còn lại:</span>
               </div>
-              <div className="text-right">
+              <div style={{textAlign: "right"}}>
                 <span>--</span>
               </div>
             </div>
-            <div className="flex justify-between">
-              <div className="text-right">
+            <div style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
+              <div style={{textAlign: "right"}}>
                 <span>Thẻ:</span>
               </div>
-              <div className="text-right">
+              <div style={{textAlign: "right"}}>
                 <span>--</span>
               </div>
             </div>
           </div>
-          <div className="flex items-center flex-col mt-5">
-            <div className="w-1/2">
-              <div
-                className="border border-dashed w-100 mb-2"
-                style={{ borderColor: '#000000' }}
-              ></div>
-
-              <div className="border border-dashed w-100" style={{ borderColor: '#000000' }}></div>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            marginTop: '20px'
+          }}>
+            <div style={{width: "55%"}}>
+            <div
+              style={{ border: "1px dashed #000000", margin: "15px 0px"}}
+            ></div>
+            <div
+              style={{ border: "1px dashed #000000", margin: "15px 0px"}}
+            ></div>
             </div>
-            <div className="my-4 flex flex-col items-center">
-              <span style={{ fontSize: '20px' }} className="font-bold">
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              margin: "18px 0px"
+            }}>
+              <span style={{ fontSize: '20px', fontWeight: "bold" }}>
                 YÊU CẦU HỖ TRỢ
               </span>
               <span>
@@ -225,32 +331,41 @@ const Invoice = ({ data }) => {
                 (<strong>7:00 - 21:00</strong> · Trừ CN và ngày lễ)
               </span>
             </div>
-            <div className="w-1/2">
-              <div
-                className="border border-dashed w-100 mb-2"
-                style={{ borderColor: '#000000' }}
-              ></div>
-
-              <div className="border border-dashed w-100" style={{ borderColor: '#000000' }}></div>
+            <div style={{width: "55%"}}>
+            <div
+              style={{ border: "1px dashed #000000", margin: "15px 0px"}}
+            ></div>
+            <div
+              style={{ border: "1px dashed #000000", margin: "15px 0px"}}
+            ></div>
             </div>
           </div>
 
-          <div className="footer flex gap-1 pt-3 mt-5 flex-col items-center">
-            <span className="font-bold text-center" style={{ fontSize: '24px' }}>
+          <div style={{
+            display: 'flex',
+            gap: 5,
+            marginTop: "15px",
+            flexDirection: "column",
+          }}>
+            <span style={{ fontSize: '24px', fontWeight: "bold", textAlign: "center" }}>
               Tải ứng dụng OneLife để sử dụng thẻ ngay hôm nay
             </span>
-            <span className="text-center">
+            <span style={{textAlign: "center"}}>
               Dùng Thẻ OneLife - Kingfoodmart để hưởng <strong>Freeship</strong> và{' '}
               <strong>nhận thêm giá trị Thẻ nạp</strong>
             </span>
           </div>
         </div>
-        <div className="flex justify-center mt-2">
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "10px"
+        }}>
           <SImage src="/qr.jpg" width="158" height="158" />
         </div>
       </div>
     </div>
-    </>
+    </div>
   );
 };
 
